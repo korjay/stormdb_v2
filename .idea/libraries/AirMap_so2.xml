@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="AirMap_so2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/AirMap_so2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javabuilder.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

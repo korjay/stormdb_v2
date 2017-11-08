@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="glnxa64">
+    <CLASSES />
+    <JAVADOC />
+    <NATIVE>
+      <root url="file:///opt/v901/runtime/glnxa64" />
+      <root url="file:///opt/v901/bin/glnxa64" />
+      <root url="file:///opt/v901/sys/os/glnxa64" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>
