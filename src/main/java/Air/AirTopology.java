@@ -68,7 +68,6 @@ public class AirTopology {
                 + " seconds.#####");
         System.out
                 .println("------------------------------------------------------");
-        Thread.sleep(1000 * 30);
     }
 
 

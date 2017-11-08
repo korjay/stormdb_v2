@@ -35,14 +35,14 @@ public class No2Bolt extends BaseRichBolt {
     static private Object[] bld3d = null;
     static private AirMap airMap = null;
     static private ObjectArray ground = null;
-    static private ObjectArray emit_data1 = null;
+    static private ObjectArray step2_region = null;
     static private ObjectArray step2_data = null;
 
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         this.collector = outputCollector;
         try {
             ground = new ObjectArray();
-            emit_data1 = new ObjectArray();
+            step2_region = new ObjectArray();
             step2_data = new ObjectArray();
             airMap = new AirMap();
                 for (int o = 0; o <= 1; o++) {
@@ -95,7 +95,7 @@ public class No2Bolt extends BaseRichBolt {
             result_step2_1 = step2_data.getValue();
 
             n = new MWNumericArray(Double.valueOf(i), MWClassID.DOUBLE);
-            int o = 0;
+            int o = step2_region.getNum();
             region_n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
             result_step2 = airMap.step2(1, region_n);
             result_step2_2 = airMap.step2_2(2, result_step2_1[0], 0.1, result_step2[0]);

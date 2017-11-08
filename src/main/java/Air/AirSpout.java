@@ -20,7 +20,7 @@ public class AirSpout extends BaseRichSpout {
     private SpoutOutputCollector collector;
 
     static private ObjectArray ground = null;
-    static private ObjectArray so_ground = null;
+    static private ObjectArray step2_region = null;
     static private ObjectArray emit_data1 = null;
     static private ObjectArray so_emit_data1 = null;
     static private ObjectArray step2_data = null;
@@ -38,12 +38,19 @@ public class AirSpout extends BaseRichSpout {
     AirMap airMap;
 
 
+
     public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector collector) {
+        try {
+            Thread.sleep(1000 * 30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.collector = collector;
 
         try {
             ground = new ObjectArray();
             step2_data = new ObjectArray();
+            step2_region = new ObjectArray();
             airMap = new AirMap();
             for (int o = 0; o <= 1; o++) {
                 region_n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
@@ -76,19 +83,30 @@ public class AirSpout extends BaseRichSpout {
                 ground.setValue(result_step1_2);
                 ground.setFlag(1);
                 ground.setNum(i);
+                step2_region.setNum(i);
                 this.collector.emit(new Values(ground.getValue(), ground.getFlag(), ground.getNum()));
+                for(int o = 1; o <=51; o++){
+                    n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
+                    result_step2_1 = airMap.step2_1(1, result_step2[0], n, region_n);
+                    step2_data.setValue(result_step2_1);
+                    step2_data.setFlag(2);
+                    step2_data.setNum(o);
+                    this.collector.emit(new Values(step2_data.getValue(), step2_data.getFlag(), step2_data.getNum()));
+                    System.out.println("########## no2 data emit##########");
+                    Thread.sleep(20 * 1);
+                }
             }
 
-            for(int o = 1; o <=51; o++){
-                n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
-                result_step2_1 = airMap.step2_1(1, result_step2[0], n, region_n);
-                step2_data.setValue(result_step2_1);
-                step2_data.setFlag(2);
-                step2_data.setNum(o);
-                this.collector.emit(new Values(step2_data.getValue(), step2_data.getFlag(), step2_data.getNum()));
-                System.out.println("########## no2 data emit##########");
-                Thread.sleep(20 * 1);
-            }
+//            for(int o = 1; o <=51; o++){
+//                n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
+//                result_step2_1 = airMap.step2_1(1, result_step2[0], n, region_n);
+//                step2_data.setValue(result_step2_1);
+//                step2_data.setFlag(2);
+//                step2_data.setNum(o);
+//                this.collector.emit(new Values(step2_data.getValue(), step2_data.getFlag(), step2_data.getNum()));
+//                System.out.println("########## no2 data emit##########");
+//                Thread.sleep(20 * 1);
+//            }
             Thread.sleep(1000 * 300);
 
 
