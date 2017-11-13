@@ -27,10 +27,17 @@ public class AirTopology {
 
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException, InterruptedException {
         double beginTime = System.currentTimeMillis();
+        Config conf = new Config();
 
         System.out.println("@@@ Create Topology Builder @@@");
         //make Topology
         TopologyBuilder builder = new TopologyBuilder();
+        //make kafka-spout
+//        builder.setSpout("kafka_spout", new kafka_so_spout(), 1);
+//        conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 2048);
+//        conf.put(Config.TOPOLOGY_BACKPRESSURE_ENABLE, false);
+//        conf.put(Config.TOPOLOGY_EXECUTOR_RECEIVE_BUFFER_SIZE, 16384);
+//        conf.put(Config.TOPOLOGY_EXECUTOR_SEND_BUFFER_SIZE, 16384);
         //make Spout
         builder.setSpout("spout", new AirSpout(), 1);
         //make so2Spout
@@ -56,7 +63,7 @@ public class AirTopology {
 //        cluster.killTopology("AirTopology");
 //        cluster.shutdown();
 
-        Config conf = new Config();
+//        Config conf = new Config();
         conf.setNumAckers(0);
         conf.setNumWorkers(40);
         conf.setMaxSpoutPending(5000);
@@ -68,6 +75,7 @@ public class AirTopology {
                 + " seconds.#####");
         System.out
                 .println("------------------------------------------------------");
+        Thread.sleep(1000*50);
     }
 
 

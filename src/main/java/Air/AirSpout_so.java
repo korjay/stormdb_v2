@@ -72,13 +72,13 @@ public class AirSpout_so extends BaseRichSpout {
         try {
             for (int i = 0; i <= 1; i++) {
                 region_n = new MWNumericArray(Double.valueOf(i), MWClassID.DOUBLE);
+                System.out.println("@@@@SO2 spout region :"+region_n);
                 so_result_step1_1 = airMap_so2.so_step1_1(5);
                 so_result_step1_2 = airMap_so2.so_step1_2(5);
                 //ground data emit
                 so_ground.setValue(so_result_step1_2);
                 so_ground.setFlag(1);
                 so_ground.setNum(i);
-                step2_region.setNum(i);
                 this.collector.emit(new Values(so_ground.getValue(), so_ground.getFlag(), so_ground.getNum()));
                 for (int o = 1; o <= 51; o++) {
                     n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
@@ -88,7 +88,8 @@ public class AirSpout_so extends BaseRichSpout {
                     so_step2_data.setNum(o);
                     this.collector.emit(new Values(so_step2_data.getValue(), so_step2_data.getFlag(), so_step2_data.getNum()));
                     System.out.println("########## SO2 data emit##########");
-                    Thread.sleep(20 * 1);
+                    System.out.println("SO2 stage :"+o);
+                    Thread.sleep(500 * 1);
                 }
             }
 
@@ -102,7 +103,7 @@ public class AirSpout_so extends BaseRichSpout {
 //                System.out.println("########## SO2 data emit##########");
 //                Thread.sleep(20 * 1);
 //            }
-            Thread.sleep(1000 * 300);
+            Thread.sleep(1000 * 50);
         } catch (InterruptedException e) {
             System.out.println("@@@Spout Exception: " + e.toString());
         } catch (MWException e) {

@@ -96,6 +96,7 @@ public class No2Bolt extends BaseRichBolt {
 
             n = new MWNumericArray(Double.valueOf(i), MWClassID.DOUBLE);
             int o = step2_region.getNum();
+            System.out.println("NO2 step 2 stage :" + o);
             region_n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
             result_step2 = airMap.step2(1, region_n);
             result_step2_2 = airMap.step2_2(2, result_step2_1[0], 0.1, result_step2[0]);
@@ -103,19 +104,21 @@ public class No2Bolt extends BaseRichBolt {
                     , result_step2_2[0], n, region_n);
             result_step2_4 = airMap.step2_4(result_step2_3[0], result_step2_3[1], result_step2_3[2],
                     result_step2_3[3], result_step2_3[4], region_n, result_step2[0]);
-            result_step3 = airMap.step3(result_step1_1[0], result_step1_1[1], result_step1_1[2],
-                    result_step1_1[4], result_step2[0], region_n);
+//            result_step3 = airMap.step3(result_step1_1[0], result_step1_1[1], result_step1_1[2],
+//                    result_step1_1[4], result_step2[0], region_n);
         }
         }catch (Exception e){
             System.out.println("NO step 2 Exception:" + e.toString());
         }
 //            result_step3 = airMap.step3(result_step1_1[0], result_step1_1[1], result_step1_1[2],
 //                    result_step1_1[4], result_step2[0], region_n);
-
+            result_step3 = airMap.step3(result_step1_1[0], result_step1_1[1], result_step1_1[2],
+                    result_step1_1[4], result_step2[0], region_n);
         }catch (Exception e){
             System.out.println("Spout input stream Exception : " + e.toString());
 
         }
+
 
         double endTime = System.currentTimeMillis();
         System.out

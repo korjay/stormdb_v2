@@ -77,6 +77,7 @@ public class AirSpout extends BaseRichSpout {
         try {
             for(int i = 0; i <= 1; i++){
                 region_n = new MWNumericArray(Double.valueOf(i), MWClassID.DOUBLE);
+                System.out.println("@@@@NO2 spout region :"+region_n);
                 result_step1_1 = airMap.step1_1(5);
                 result_step1_2 = airMap.step1_2(5);
                 //ground data emit
@@ -93,7 +94,8 @@ public class AirSpout extends BaseRichSpout {
                     step2_data.setNum(o);
                     this.collector.emit(new Values(step2_data.getValue(), step2_data.getFlag(), step2_data.getNum()));
                     System.out.println("########## no2 data emit##########");
-                    Thread.sleep(20 * 1);
+                    System.out.println("NO2 stage :"+o);
+                    Thread.sleep(500 * 1);
                 }
             }
 
@@ -107,7 +109,7 @@ public class AirSpout extends BaseRichSpout {
 //                System.out.println("########## no2 data emit##########");
 //                Thread.sleep(20 * 1);
 //            }
-            Thread.sleep(1000 * 300);
+            Thread.sleep(1000 * 50);
 
 
         } catch (Exception e) {
