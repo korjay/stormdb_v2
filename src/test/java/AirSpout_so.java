@@ -1,6 +1,4 @@
-package Air;
-
-import AirMap.AirMap;
+import Air.Obj_so;
 import AirMap_so2.AirMap_so2;
 import com.mathworks.toolbox.javabuilder.MWClassID;
 import com.mathworks.toolbox.javabuilder.MWException;
@@ -22,7 +20,7 @@ import java.util.Map;
 public class AirSpout_so extends BaseRichSpout {
     private SpoutOutputCollector collector;
     static private Obj_so so_ground = null;
-    static private Obj_so step2_data = null;
+    static private Obj_so step2_region = null;
     static private Obj_so so_step2_data = null;
     static private MWNumericArray n = null;
     static private MWNumericArray region_n = null;
@@ -38,11 +36,17 @@ public class AirSpout_so extends BaseRichSpout {
     AirMap_so2 airMap_so2;
 
     public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector collector) {
+        try {
+            Thread.sleep(1000 * 30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.collector = collector;
 
         try {
             so_ground = new Obj_so();
             so_step2_data = new Obj_so();
+            step2_region = new Obj_so();
             airMap_so2 = new AirMap_so2();
             for (int o = 0; o <= 1; o++) {
                 region_n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
@@ -66,6 +70,7 @@ public class AirSpout_so extends BaseRichSpout {
         try {
             for (int i = 0; i <= 1; i++) {
                 region_n = new MWNumericArray(Double.valueOf(i), MWClassID.DOUBLE);
+                System.out.println("@@@@SO2 spout region :"+region_n);
                 so_result_step1_1 = airMap_so2.so_step1_1(5);
                 so_result_step1_2 = airMap_so2.so_step1_2(5);
                 //ground data emit
@@ -73,19 +78,30 @@ public class AirSpout_so extends BaseRichSpout {
                 so_ground.setFlag(1);
                 so_ground.setNum(i);
                 this.collector.emit(new Values(so_ground.getValue(), so_ground.getFlag(), so_ground.getNum()));
+                for (int o = 1; o <= 51; o++) {
+                    n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
+                    so_result_step2_1 = airMap_so2.so_step2_1(1, so_result_step2[0], n, region_n);
+                    so_step2_data.setValue(so_result_step2_1);
+                    so_step2_data.setFlag(2);
+                    so_step2_data.setNum(o);
+                    this.collector.emit(new Values(so_step2_data.getValue(), so_step2_data.getFlag(), so_step2_data.getNum()));
+                    System.out.println("########## SO2 data emit##########");
+                    System.out.println("SO2 stage :"+o);
+                    Thread.sleep(500 * 1);
+                }
             }
 
-            for (int o = 1; o <= 51; o++) {
-                n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
-                so_result_step2_1 = airMap_so2.so_step2_1(1, so_result_step2[0], n, region_n);
-                so_step2_data.setValue(so_result_step2_1);
-                so_step2_data.setFlag(2);
-                so_step2_data.setNum(o);
-                this.collector.emit(new Values(so_step2_data.getValue(), so_step2_data.getFlag(), so_step2_data.getNum()));
-                System.out.println("########## SO2 data emit##########");
-                Thread.sleep(20 * 1);
-            }
-            Thread.sleep(1000 * 300);
+//            for (int o = 1; o <= 51; o++) {
+//                n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
+//                so_result_step2_1 = airMap_so2.so_step2_1(1, so_result_step2[0], n, region_n);
+//                so_step2_data.setValue(so_result_step2_1);
+//                so_step2_data.setFlag(2);
+//                so_step2_data.setNum(o);
+//                this.collector.emit(new Values(so_step2_data.getValue(), so_step2_data.getFlag(), so_step2_data.getNum()));
+//                System.out.println("########## SO2 data emit##########");
+//                Thread.sleep(20 * 1);
+//            }
+            Thread.sleep(1000 * 50);
         } catch (InterruptedException e) {
             System.out.println("@@@Spout Exception: " + e.toString());
         } catch (MWException e) {

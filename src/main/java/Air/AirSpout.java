@@ -75,7 +75,7 @@ public class AirSpout extends BaseRichSpout {
     public void nextTuple(){
         double beginTime = System.currentTimeMillis();
         try {
-            for(int i = 0; i <= 1; i++){
+            for(int i = 0; i <= 500; i++){
                 region_n = new MWNumericArray(Double.valueOf(i), MWClassID.DOUBLE);
                 System.out.println("@@@@NO2 spout region :"+region_n);
                 result_step1_1 = airMap.step1_1(5);
@@ -95,8 +95,8 @@ public class AirSpout extends BaseRichSpout {
                     this.collector.emit(new Values(step2_data.getValue(), step2_data.getFlag(), step2_data.getNum()));
                     System.out.println("########## no2 data emit##########");
                     System.out.println("NO2 stage :"+o);
-                    Thread.sleep(500 * 1);
                 }
+                Thread.sleep(1000 * 70);
             }
 
 //            for(int o = 1; o <=51; o++){

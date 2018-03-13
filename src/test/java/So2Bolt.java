@@ -1,6 +1,4 @@
-package Air;
-
-import AirMap.AirMap;
+import Air.Obj_so;
 import AirMap_so2.AirMap_so2;
 import com.mathworks.toolbox.javabuilder.MWClassID;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
@@ -34,14 +32,15 @@ public class So2Bolt extends BaseRichBolt {
     static private Object[] bld3d = null;
     static private AirMap_so2 airMap_so2 = null;
     static private Obj_so so_ground = null;
-    static private Obj_so emit_data1 = null;
+    static private Obj_so step2_region = null;
     static private Obj_so so_step2_data = null;
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         this.collector = outputCollector;
         try {
             so_ground = new Obj_so();
-            emit_data1 = new Obj_so();
+            step2_region = new Obj_so();
             so_step2_data = new Obj_so();
+            airMap_so2 = new AirMap_so2();
 
             for (int o = 0; o <= 1; o++) {
                 System.out.println("###SO step2 region_n ###= " + o);
@@ -70,9 +69,10 @@ public class So2Bolt extends BaseRichBolt {
             if(so_ground.getFlag() == 1){
                 so_result_step1_2 = so_ground.getValue();
                 System.out.println("###########SO2 ground value = " + so_ground.getValue());
-                this.airMap_so2 = new AirMap_so2();
+//                this.airMap_so2 = new AirMap_so2();
 
                 try {
+                    so_ground = new Obj_so();
                     int o = so_ground.getNum();
                     region_n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
                     so_result_step1_3 = airMap_so2.so_step1_3(1, so_result_step1_2[1], so_result_step1_2[3], so_result_step1_2[4],
@@ -89,20 +89,26 @@ public class So2Bolt extends BaseRichBolt {
                 if(so_step2_data.getFlag() == 2) {
                     int i = so_step2_data.getNum();
                     so_result_step2_1 = so_step2_data.getValue();
-
                     n = new MWNumericArray(Double.valueOf(i), MWClassID.DOUBLE);
+
+                    int o = step2_region.getNum();
+                    System.out.println("SO2 step 2 stage :" + o);
+                    region_n = new MWNumericArray(Double.valueOf(o), MWClassID.DOUBLE);
+
                     so_result_step2 = airMap_so2.so_step2(1, region_n);
                     so_result_step2_2 = airMap_so2.so_step2_2(2, so_result_step2_1[0], 0.1, so_result_step2[0]);
                     so_result_step2_3 = airMap_so2.so_step2_3(5, so_result_step1_2[0], so_result_step1_2[3], so_result_step2[0]
                             , so_result_step2_2[0], n, region_n);
                     so_result_step2_4 = airMap_so2.so_step2_4(so_result_step2_3[0], so_result_step2_3[1], so_result_step2_3[2],
                             so_result_step2_3[3], so_result_step2_3[4], region_n, so_result_step2[0]);
-                    so_result_step3 = airMap_so2.so_step3(so_result_step1_1[0], so_result_step1_1[1], so_result_step1_1[2],
-                            so_result_step1_1[4], so_result_step2[0], region_n);
+//                    so_result_step3 = airMap_so2.so_step3(so_result_step1_1[0], so_result_step1_1[1], so_result_step1_1[2],
+//                            so_result_step1_1[4], so_result_step2[0], region_n);
                 }
             }catch (Exception e){
                 System.out.println("SO step 2 Exception:" + e.toString());
             }
+            so_result_step3 = airMap_so2.so_step3(so_result_step1_1[0], so_result_step1_1[1], so_result_step1_1[2],
+                    so_result_step1_1[4], so_result_step2[0], region_n);
 
         }catch (Exception e){
             System.out.println("Spout input stream Exception : " + e.toString());

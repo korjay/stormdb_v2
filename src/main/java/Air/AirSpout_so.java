@@ -70,7 +70,7 @@ public class AirSpout_so extends BaseRichSpout {
     public void nextTuple() {
         double beginTime = System.currentTimeMillis();
         try {
-            for (int i = 0; i <= 1; i++) {
+            for (int i = 0; i <= 500; i++) {
                 region_n = new MWNumericArray(Double.valueOf(i), MWClassID.DOUBLE);
                 System.out.println("@@@@SO2 spout region :"+region_n);
                 so_result_step1_1 = airMap_so2.so_step1_1(5);
@@ -89,8 +89,9 @@ public class AirSpout_so extends BaseRichSpout {
                     this.collector.emit(new Values(so_step2_data.getValue(), so_step2_data.getFlag(), so_step2_data.getNum()));
                     System.out.println("########## SO2 data emit##########");
                     System.out.println("SO2 stage :"+o);
-                    Thread.sleep(500 * 1);
+//                    Thread.sleep(500 * 1);
                 }
+                Thread.sleep(1000 * 70);
             }
 
 //            for (int o = 1; o <= 51; o++) {

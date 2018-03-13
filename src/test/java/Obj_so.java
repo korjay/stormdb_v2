@@ -1,5 +1,3 @@
-package Air;
-
 import java.io.Serializable;
 
 /**
@@ -9,6 +7,7 @@ public class Obj_so implements Serializable {
     private static Object[] ObjArr = null;
     private static int flag=0;
     public int num = 0;
+//    public int num1 = 0;
 
     public void setValue(Object[] obj){
         ObjArr=obj;
@@ -28,6 +27,10 @@ public class Obj_so implements Serializable {
     public int getNum(){
         return num;
     }
+
+//    public void setNum1(int j){num1 = j;}
+//
+//    public int getNum1(){return num1;}
 
 
 

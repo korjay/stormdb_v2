@@ -1,16 +1,16 @@
-package Air;
-
+import Air.AirSpout;
+import Air.AirSpout_so;
+import Air.No2Bolt;
+import Air.So2Bolt;
 import AirMap.AirMap;
 import AirMap_so2.AirMap_so2;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import org.apache.storm.Config;
-import org.apache.storm.LocalCluster;
 import org.apache.storm.StormSubmitter;
 import org.apache.storm.generated.AlreadyAliveException;
 import org.apache.storm.generated.AuthorizationException;
 import org.apache.storm.generated.InvalidTopologyException;
 import org.apache.storm.topology.TopologyBuilder;
-import org.apache.storm.tuple.Fields;
 
 /**
  * Created by honey on 17. 10. 22.
@@ -27,10 +27,17 @@ public class AirTopology {
 
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException, InterruptedException {
         double beginTime = System.currentTimeMillis();
+        Config conf = new Config();
 
         System.out.println("@@@ Create Topology Builder @@@");
         //make Topology
         TopologyBuilder builder = new TopologyBuilder();
+        //make kafka-spout
+//        builder.setSpout("kafka_spout", new kafka_so_spout(), 1);
+//        conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 2048);
+//        conf.put(Config.TOPOLOGY_BACKPRESSURE_ENABLE, false);
+//        conf.put(Config.TOPOLOGY_EXECUTOR_RECEIVE_BUFFER_SIZE, 16384);
+//        conf.put(Config.TOPOLOGY_EXECUTOR_SEND_BUFFER_SIZE, 16384);
         //make Spout
         builder.setSpout("spout", new AirSpout(), 1);
         //make so2Spout
@@ -56,7 +63,7 @@ public class AirTopology {
 //        cluster.killTopology("AirTopology");
 //        cluster.shutdown();
 
-        Config conf = new Config();
+//        Config conf = new Config();
         conf.setNumAckers(0);
         conf.setNumWorkers(40);
         conf.setMaxSpoutPending(5000);
@@ -68,7 +75,7 @@ public class AirTopology {
                 + " seconds.#####");
         System.out
                 .println("------------------------------------------------------");
-        Thread.sleep(1000 * 30);
+        Thread.sleep(1000*50);
     }
 
 

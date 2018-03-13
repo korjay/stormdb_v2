@@ -43,6 +43,8 @@ public class AirTopology {
         //make so2Spout
         builder.setSpout("spout_so", new AirSpout_so(), 1);
         //make No2Bolt
+//        builder.setBolt("no2_step1", new no_step1_Bolt(), 15)
+//                .shuffleGrouping("spout");
         builder.setBolt("no2", new No2Bolt(), 30)
                 .shuffleGrouping("spout");
         //make So2Bolt
